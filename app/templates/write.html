@@ -11,29 +11,50 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-
-<div class="jumbotron">
-  <div class="container">
-    <form method="post" action="/article/write/" class="form-horizontal">
-      {% csrf_token %}
-      <div class="form-group">
-        <label for="Select" class="col-sm-2 control-label">Category</label>
-        <div class="col-sm-10">
-          <select id="Select" class="form-control">
-            <option>카테고리선택</option>
-            <option>추천</option>
-            <option>후기</option>
-          </select>
+  <script>
+    let type = ''
+    const types=[
+      '추천',
+      '후기'
+    ]
+      // form submit을 막고, Select의 값을 확인하여 경고 메시지를 띄웁니다.
+  $('form').submit(function(event) {
+    if ($('#Select').val() === '0') {
+      alert('카테고리를 선택해주세요.');
+      event.preventDefault();
+    }
+  });
+  </script>
+  
+  <div class="jumbotron">
+    <div class="container">
+      <form method="post" action="/article/write/" class="form-horizontal">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="Select" class="col-sm-2 control-label">Category</label>
+          <div class="col-sm-10">
+            <select bind:value="{type}" id="Select" class="form-control">
+              <option value="t0" selected disabled>카테고리선택</option>
+                {#each types as t (t)}
+                  {#if t === 't'}
+                    <option value="t1">추천</option>
+                  {:else}
+                    <option value="t2">후기</option>
+                  {/if}
+                {/each}
+          
+            </select>
+          </div>
         </div>
-      </div>
+
     <div class="form-group">
-      <label class="col-sm-2 control-label">Title</label>
+      <label class="col-sm-2 control-label", name = title>Title</label>
       <div class="col-sm-10">
         <input class="form-control" id="focusedInput" type="text" placeholder="제목을 입력해주세요.">
       </div>
     </div>
     <div class="form-group">
-      <label class="col-sm-2 control-label">Content</label>
+      <label class="col-sm-2 control-label" name = content >Content</label>
       <div class="col-sm-10">
         <textarea class="form-control" rows="10" style="resize:none;" id="focusedInput" type="text" placeholder="내용을 입력해주세요."></textarea>
       </div>
